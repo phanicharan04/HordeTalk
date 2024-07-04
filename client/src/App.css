@@ -1,0 +1,13 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+.app__body {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 50px;
+}

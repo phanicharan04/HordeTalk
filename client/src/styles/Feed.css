@@ -1,0 +1,44 @@
+.feed {
+    /* flex: 0.75; */
+    padding: 20px;
+    margin-left: 20px;
+    text-align: center;
+    background-color: lightgray;
+    min-height: 100vh;
+    max-height: max-content;
+    width: 50%;
+    border-radius: 20px;
+  }
+  
+  .feed__inputContainer {
+    background-color: white;
+    padding: 5px;
+    margin-bottom: 20px;
+    border-radius: 30px;
+  }
+  .feed__input{
+    padding: 2px;
+    overflow: hidden;
+    border-radius: 30px;
+  }
+  .feed__input input {
+    width: 100%;
+    border: none;
+    padding: 10px;
+    outline: none;
+    font-size: medium;
+    
+    
+  }
+  
+  .feed__posts {
+    margin-top: 20px;
+  }
+  
+  .feed__post {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+  
