@@ -1,0 +1,54 @@
+.post {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+  
+  .post__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .post__info {
+    margin-left: 10px;
+    flex: 1;
+  }
+  
+  .post__connectButton {
+    background-color: #0073b1;
+    color: white;
+    text-transform: capitalize;
+    border-radius: 20px;
+  }
+  
+  .post__body {
+    margin-top: 20px;
+  }
+  
+  .post__image, .post__video {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 10px;
+  }
+  
+  .post__file {
+    display: block;
+    margin-top: 10px;
+    color: #0073b1;
+    text-decoration: none;
+  }
+  
+  .post__buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .post__button {
+    text-transform: capitalize;
+    color: gray;
+  }
+  
