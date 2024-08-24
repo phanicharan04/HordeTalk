@@ -1,6 +1,6 @@
 import user from "../model/User.js";
 import bcrypt from "bcrypt";
-
+import generateToken from "../config/token.js";
 export const signUpUser=async(req,res)=>{
     try {
         const{fname,lname,username,age,email,password,mobile}=req.body
@@ -57,6 +57,7 @@ export const loginUser = async (req,res)=>{
                     email:curruser.email,
                     username:curruser.username,
                     name:curruser.fname+" "+curruser.lname,
+                    token:generateToken(curruser?._id)
                 })
             }
             else{
@@ -66,4 +67,9 @@ export const loginUser = async (req,res)=>{
     } catch (error) {
         res.status(500).send(error.message)
     }
+}
+
+export const viewAllUsers=async(req,res)=>{
+    const allusers = await user.find()
+    res.status(200).send(allusers)
 }
