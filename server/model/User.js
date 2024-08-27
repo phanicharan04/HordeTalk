@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcrypt'
 //to make blueprint of your collection
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
     {
         "fname": String,
         "lname": String,
