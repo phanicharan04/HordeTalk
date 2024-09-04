@@ -73,3 +73,6 @@ export const viewAllUsers=async(req,res)=>{
     const allusers = await user.find()
     res.status(200).send(allusers)
 }
+
+export const updateProfile = async (req, res) => {
+}

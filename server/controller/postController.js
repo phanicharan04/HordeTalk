@@ -1,12 +1,49 @@
 import post from "../model/Post.js";
+import { v2 as cloudinary } from 'cloudinary';
+
+const uploadToCloudinary = async (buffer) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream((error, result) => {
+      if (error) {
+        return reject(error);
+      }
+      
+      resolve(result);
+    });
+    stream.end(buffer);
+  });
+};
 
 export const addPost = async (req, res) => {
-  const { title, desc, uId } = req.body;
+  // const { title, desc, uId } = req.body;
+  let {body}=req.body
+  body=JSON.parse(body)
+  console.log(body);
+  
+  const { title, desc, uId }=body
+  let result="";
+
   try {
+    if (req.files) {
+      const file = req.files.image; // The uploaded file
+      const buffer = file.data; // Access the buffer from the file
+  
+      // Upload the buffer to Cloudinary
+  
+      cloudinary.config({
+        cloud_name: "dnrcizmkk",
+        api_key: "564648445716745",
+        api_secret: "eVw1EB_fS3V6UzDh8yuM2eNoqCA",
+      });
+  
+       result = await uploadToCloudinary(buffer);
+      
+    }
     const newPost = await post.create({
       title,
       desc,
       authorId: uId,
+      postImage:result?.url || ""
     });
     res.status(201).send(newPost);
   } catch (error) {
@@ -64,3 +101,33 @@ export const deletePost = async (req, res) =>{
     await post.deleteOne({_id:postId})
     res.status(200).send("Post Deleted Successfully...!")
 }
+
+
+
+export const uploadImg = async (req, res) => {
+  try {
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+
+    console.log(req);
+    
+    const file = req.files.image; // The uploaded file
+    const buffer = file.data; // Access the buffer from the file
+
+    // Upload the buffer to Cloudinary
+
+    cloudinary.config({
+      cloud_name: "dnrcizmkk",
+      api_key: "564648445716745",
+      api_secret: "eVw1EB_fS3V6UzDh8yuM2eNoqCA",
+    });
+
+    const result = await uploadToCloudinary(buffer);
+
+    res.json({ url: result.secure_url }); // Send back the Cloudinary URL
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+

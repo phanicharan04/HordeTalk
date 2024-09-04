@@ -1,6 +1,6 @@
 import express from 'express';
 import validateToken from '../middleware/authMiddleware.js';
-import { addPost, deletePost, likePost, updatePost, viewAllPosts, viewPostById } from '../controller/postController.js';
+import { addPost, deletePost, likePost, updatePost, uploadImg, viewAllPosts, viewPostById } from '../controller/postController.js';
 
 const postRouter = express.Router();
 
@@ -15,6 +15,8 @@ postRouter.route("/findallposts").get(validateToken,viewAllPosts)
 postRouter.route("/findpostbyid").get(validateToken,viewPostById)
 
 postRouter.route("/deletepost/:postId").delete(validateToken,deletePost)
+
+postRouter.route("/uploadimg").post(uploadImg)
 
 export default postRouter;
 
