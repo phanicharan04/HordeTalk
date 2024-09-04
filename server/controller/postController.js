@@ -1,5 +1,11 @@
 import post from "../model/Post.js";
 import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+
+dotenv.config()
+const cloudname=process.env.CLOUD_NAME
+const apikey=process.env.API_KEY
+const apisecret=process.env.API_SECRET
 
 const uploadToCloudinary = async (buffer) => {
   return new Promise((resolve, reject) => {
@@ -31,9 +37,9 @@ export const addPost = async (req, res) => {
       // Upload the buffer to Cloudinary
   
       cloudinary.config({
-        cloud_name: "dnrcizmkk",
-        api_key: "564648445716745",
-        api_secret: "eVw1EB_fS3V6UzDh8yuM2eNoqCA",
+        cloud_name: cloudname,
+        api_key: apikey,
+        api_secret: apisecret,
       });
   
        result = await uploadToCloudinary(buffer);
