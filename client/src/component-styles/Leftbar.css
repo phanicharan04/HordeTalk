@@ -1,0 +1,14 @@
+.leftbar-container {
+    width: 20%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  @media (max-width: 768px) {
+    .leftbar-container {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+  

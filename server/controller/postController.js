@@ -87,7 +87,7 @@ export const updatePost = async (req, res) => {
 }
 
 export const viewAllPosts = async (req, res) => {
-    const allposts = await post.find()
+    const allposts = await post.find().populate("authorId").populate("likedBy")
     res.status(200).send(allposts)
 }
 

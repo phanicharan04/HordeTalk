@@ -74,5 +74,60 @@ export const viewAllUsers=async(req,res)=>{
     res.status(200).send(allusers)
 }
 
+export const viewUserById = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const userProfile = await user.findById(userId);
+
+        if (!userProfile) {
+            return res.status(404).send("User Not Found");
+        }
+
+        res.status(200).json({
+            _id: userProfile._id,
+            fname: userProfile.fname,
+            lname: userProfile.lname,
+            username: userProfile.username,
+            age: userProfile.age,
+            email: userProfile.email,
+            mobile: userProfile.mobile,
+        });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+
 export const updateProfile = async (req, res) => {
-}
+    try {
+        const userId = req.params.id;
+        const { fname, lname, username, age, email, mobile } = req.body;
+        
+        const userToUpdate = await user.findById(userId);
+        
+        if (!userToUpdate) {
+            return res.status(404).send("User Not Found");
+        }
+
+        userToUpdate.fname = fname || userToUpdate.fname;
+        userToUpdate.lname = lname || userToUpdate.lname;
+        userToUpdate.username = username || userToUpdate.username;
+        userToUpdate.age = age || userToUpdate.age;
+        userToUpdate.email = email || userToUpdate.email;
+        userToUpdate.mobile = mobile || userToUpdate.mobile;
+
+        const updatedUser = await userToUpdate.save();
+
+        res.status(200).json({
+            _id: updatedUser._id,
+            fname: updatedUser.fname,
+            lname: updatedUser.lname,
+            username: updatedUser.username,
+            age: updatedUser.age,
+            email: updatedUser.email,
+            mobile: updatedUser.mobile,
+        });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};

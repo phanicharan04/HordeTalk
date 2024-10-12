@@ -1,0 +1,74 @@
+.addUser {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h3 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.addUserForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup label {
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.inputGroup input[type="text"],
+.inputGroup input[type="email"],
+.inputGroup input[type="password"],
+.inputGroup input[type="file"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.inputGroup button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.inputGroup button:hover {
+  background-color: #0056b3;
+}
+
+.login {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.login p {
+  color: #555;
+}
+.btn.btn-success{
+  width: 50%;
+}
+
+@media (max-width: 768px) {
+  .addUser {
+    width: 90%;
+  }
+}

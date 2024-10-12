@@ -1,0 +1,31 @@
+.home-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  height: calc(100vh - 60px); /* Assuming Navbar has a height of 60px */
+}
+
+.home-container > div {
+  margin: 0 10px;
+}
+
+/* Slightly decrease Leftbar and Rightbar, increase middle section */
+.leftbar, .rightbar {
+  flex: 1; /* Adjust the size, slightly larger than before */
+}
+
+.feed-section {
+  flex: 3.5; /* Middle section gets less space but still more than sidebars */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Adjust AddPost and Feed for responsiveness */
+@media (max-width: 768px) {
+  .home-container {
+    flex-direction: column;
+  }
+}

@@ -1,40 +1,62 @@
-import React from 'react';
-import '../styles/Feed.css';
-import Post from './Post';
-import Posts from './Posts';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import '../component-styles/Feed.css'
+import likeGif from '../logos/likeicon.gif'
+import shareGif from '../logos/shareicon.gif'
+import saveGif from '../logos/saveicon.gif'
 
-function Feed() {
+const Feed = () => {
+  const posturl = process.env.REACT_APP_backendPostURL
+  const [data, setData] = useState([])
+
+  async function getPosts() {
+    const { data } = await axios.get(`${posturl}/findallposts`)
+    setData(data)
+    console.log(data)
+  }
+
+  useEffect(() => {
+    getPosts()
+  }, [])
+
+  const handleLike = (postId) => {
+    console.log("Liked post: ", postId)
+  }
+
+  const handleShare = (postId) => {
+    console.log("Shared post: ", postId)
+  }
+
+  const handleSave = (postId) => {
+    console.log("Saved post: ", postId)
+  }
+
   return (
-    <div className="feed">
-      <Post></Post>
-      <div className="feed__posts">
-        
-        <Posts
-          name="John Doe"
-          description="Software Engineer at Tech Corp"
-          message="Check out this cool image!"
-          photoUrl="https://via.placeholder.com/150"
-        />
-        <Posts
-          name="Jane Smith"
-          description="Product Manager at Innovations Inc."
-          message="Watch this amazing video!"
-          videoUrl="https://www.w3schools.com/html/mov_bbb.mp4"
-        />
-        <Posts
-          name="Alice Johnson"
-          description="Freelance Designer"
-          message="Here's a file you might find useful."
-          fileUrl="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-        />
-        <Posts 
-          name="Bob Brown"
-          description="Data Scientist at DataWorks"
-          message="I just completed a new project!"
-        />
-      </div>
+    <div className='feed-container'>
+      {data.map((post, index) => (
+        <div key={index} className='postcard'>
+          <div className='post-header'>
+            <img src={post.authorId.profilePic || 'default-dp.jpg'} alt='User DP' className='user-dp' />
+            <div>
+              <span className='author-name'>{post.authorId.name || 'Unknown Author'}</span>
+              <span className='post-time'>{new Date(post.createdAt).toLocaleString()}</span>
+            </div>
+          </div>
+          <div className='post-content'>
+            {post.desc && <p className='post-description'>{post.desc}</p>}
+            {post.postImage && (
+              <img src={post.postImage} alt="Post" className='post-image' />
+            )}
+          </div>
+          <div className='post-actions'>
+            <img src={likeGif} alt="Like" onClick={() => handleLike(post._id)} className='action-gif' />
+            <img src={shareGif} alt="Share" onClick={() => handleShare(post._id)} className='action-gif' />
+            <img src={saveGif} alt="Save" onClick={() => handleSave(post._id)} className='action-gif' />
+          </div>
+        </div>
+      ))}
     </div>
-  );
+  )
 }
 
-export default Feed;
+export default Feed
