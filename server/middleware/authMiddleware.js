@@ -1,23 +1,46 @@
 import jwt from 'jsonwebtoken';
 import user from '../model/User.js';
 
-const validateToken = async (req,res,next)=>{
-    if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
-        try {
-            let token = req.headers.authorization.split(" ")[1]
-            
-            const jwt_secret = process.env.JWT_SECRET
-            const decoded = jwt.verify(token, jwt_secret)
-            
-            req.user = await user.findById(decoded?._id).select("-password")
-            next()
-        } catch (error) {
-            res.status(401).send(error.message)
-        }
-    }
-    else{
-        res.status(403).send("Authorization failed")
-    }
-}
+const validateToken = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
 
-export default validateToken
+  // Check if Authorization header is present
+  if (authHeader && authHeader.startsWith('Bearer')) {
+    try {
+      const token = authHeader.split(' ')[1];  // Extract the token
+      const jwt_secret = process.env.JWT_SECRET; // Make sure JWT_SECRET is loaded
+
+      if (!jwt_secret) {
+        return res.status(500).send('JWT secret is not configured.');
+      }
+
+      // Verify the token
+      const decoded = jwt.verify(token, jwt_secret);
+
+      if (!decoded?.id) {
+        return res.status(401).send('Token is invalid or expired.');
+      }
+
+      // Fetch user from the database
+      const userData = await user.findById(decoded.id).select('-password');
+
+      if (!userData) {
+        return res.status(404).send('User not found.');
+      }
+
+      // Attach user ID to the request object
+      req.userId = userData._id;
+
+      // Proceed to the next middleware or route
+      next();
+    } catch (error) {
+      // Handle invalid token or verification error
+      return res.status(401).send('Token verification failed: ' + error.message);
+    }
+  } else {
+    // Return error if authorization header is missing
+    return res.status(403).send('Authorization failed. No token provided.');
+  }
+};
+
+export default validateToken;

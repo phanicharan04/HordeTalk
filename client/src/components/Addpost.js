@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
 import '../component-styles/Addpost.css';
+import { useAuth } from './../context/UserContext';
 
 const Addpost = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -9,6 +10,8 @@ const Addpost = () => {
   const [desc, setDesc] = useState('');
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const { user } = useAuth();
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -27,13 +30,13 @@ const Addpost = () => {
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append('body', JSON.stringify({ title, desc, uId: 'user123' })); // Replace with actual user ID
+      formData.append('body', JSON.stringify({ title, desc, uId: user?._id })); // Replace with actual user ID
       if (image) {
         formData.append('image', image);
       }
 
       const token = localStorage.getItem('token'); // Fetch the token from storage
-      await axios.post(`${process.env.REACT_APP_backendUserURL}/addpost`, formData, {
+      await axios.post(`${process.env.REACT_APP_backendPostURL}/addpost`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
@@ -63,7 +66,7 @@ const Addpost = () => {
         />
       </div>
       <div className="addpost-input" onClick={openModal}>
-        <input type="text" placeholder="What's on your mind?" readOnly />
+        <input type="text" placeholder="What's on your mind? 💡" readOnly />
       </div>
 
       {/* Modal for adding post */}
@@ -73,18 +76,10 @@ const Addpost = () => {
         className="addpost-modal"
         overlayClassName="addpost-modal-overlay"
       >
+        {/* Close button (X mark) */}
+        <button className="modal-close-btn" onClick={closeModal}>×</button>
         <h2>Create Post</h2>
         <form onSubmit={handlePostSubmit}>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              required
-            />
-          </div>
           <div className="form-group">
             <label htmlFor="desc">Description</label>
             <textarea
@@ -101,9 +96,6 @@ const Addpost = () => {
           <div className="form-actions">
             <button type="submit" disabled={loading}>
               {loading ? 'Posting...' : 'Post'}
-            </button>
-            <button type="button" onClick={closeModal}>
-              Cancel
             </button>
           </div>
         </form>

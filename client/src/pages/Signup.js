@@ -57,6 +57,9 @@ const Signup = () => {
           
           <label htmlFor='username'>User Name</label>
           <input type='text' id='username' placeholder='Enter Your UserName' onChange={handleChange} required />
+
+          <label htmlFor='age'>Age</label>
+          <input type='number' id='age' placeholder='Enter Your Age' onChange={handleChange} required />
           
           <label htmlFor='email'>Email</label>
           <input type='email' id='email' placeholder='Enter Your Email' onChange={handleChange} required />

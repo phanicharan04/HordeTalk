@@ -1,14 +1,45 @@
 .rightbar-container {
-    width: 20%;
-    background-color: #f0f0f0;
-    padding: 20px;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  background-color: #f0f0f0;
+  padding: 40px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.rightbar-heading {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.friends-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Spacing between friends */
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.friend-dp {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.friend-name {
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .rightbar-container {
+    width: 100%;
+    margin-top: 20px;
   }
-  
-  @media (max-width: 768px) {
-    .rightbar-container {
-      width: 100%;
-      margin-top: 20px;
-    }
-  }
-  
+}

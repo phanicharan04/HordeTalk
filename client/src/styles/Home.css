@@ -8,16 +8,16 @@
 }
 
 .home-container > div {
-  margin: 0 10px;
+  margin: 0 20px;
 }
 
 /* Slightly decrease Leftbar and Rightbar, increase middle section */
 .leftbar, .rightbar {
-  flex: 1; /* Adjust the size, slightly larger than before */
+  flex: 2; /* Adjust the size, slightly larger than before */
 }
 
 .feed-section {
-  flex: 3.5; /* Middle section gets less space but still more than sidebars */
+  flex: 5; /* Middle section gets less space but still more than sidebars */
   display: flex;
   flex-direction: column;
   align-items: center;

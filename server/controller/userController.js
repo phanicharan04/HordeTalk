@@ -76,7 +76,36 @@ export const viewAllUsers=async(req,res)=>{
 
 export const viewUserById = async (req, res) => {
     try {
-        const userId = req.params.id;
+        const userId = req.params.userId;
+        const userProfile = await user.findById(userId);
+        console.log(userId);
+        
+        if (!userProfile) {
+            return res.status(404).send("User Not Found");
+        }
+
+        res.status(200).json({
+            _id: userProfile._id,
+            fname: userProfile.fname,
+            lname: userProfile.lname,
+            username: userProfile.username,
+            age: userProfile.age,
+            email: userProfile.email,
+            mobile: userProfile.mobile,
+        });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+};
+
+
+export const viewProfile = async (req, res) => {
+    try {
+        const userId = req.userId;
+        if (!userId) {
+            return res.status(400).send("User ID missing in request.");
+        }
+        
         const userProfile = await user.findById(userId);
 
         if (!userProfile) {
@@ -93,6 +122,7 @@ export const viewUserById = async (req, res) => {
             mobile: userProfile.mobile,
         });
     } catch (error) {
+        console.error("Error in viewProfile:", error.message); // Log the error message
         res.status(500).send(error.message);
     }
 };
@@ -131,3 +161,17 @@ export const updateProfile = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
+
+export const Networks = async (req, res) => {
+    const { userId } = req.body;
+    const newPostObject = await post.findByIdAndUpdate(
+      postId,
+      {
+        $addToSet: { networks: userId },
+      },
+      {
+        new: true,
+      }
+    ).populate("networks","-password")
+    res.status(201).send(newPostObject)
+  };

@@ -4,11 +4,16 @@ import '../component-styles/Feed.css'
 import likeGif from '../logos/likeicon.gif'
 import shareGif from '../logos/shareicon.gif'
 import saveGif from '../logos/saveicon.gif'
+import { useAuth } from '../context/UserContext'
+import { useNavigate } from 'react-router-dom'
 
 const Feed = () => {
   const posturl = process.env.REACT_APP_backendPostURL
+  const navigate = useNavigate()
   const [data, setData] = useState([])
-
+  const {user}= useAuth()
+  console.log(user);
+  
   async function getPosts() {
     const { data } = await axios.get(`${posturl}/findallposts`)
     setData(data)
@@ -18,6 +23,10 @@ const Feed = () => {
   useEffect(() => {
     getPosts()
   }, [])
+
+  const handleClick = (postId) => {
+    navigate(`/profiles/${postId}`)
+  }
 
   const handleLike = (postId) => {
     console.log("Liked post: ", postId)
@@ -36,9 +45,9 @@ const Feed = () => {
       {data.map((post, index) => (
         <div key={index} className='postcard'>
           <div className='post-header'>
-            <img src={post.authorId.profilePic || 'default-dp.jpg'} alt='User DP' className='user-dp' />
+            <img onClick={() => handleClick(post.authorId._id)} src={post.authorId.dp || 'default-dp.jpg'} alt='User DP' className='user-dp' />
             <div>
-              <span className='author-name'>{post.authorId.name || 'Unknown Author'}</span>
+              <span onClick={() => handleClick(post.authorId._id)} className='author-name'>{post.authorId.fname || 'Unknown Author'}</span>
               <span className='post-time'>{new Date(post.createdAt).toLocaleString()}</span>
             </div>
           </div>

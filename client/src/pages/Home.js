@@ -9,7 +9,6 @@ import Addpost from './../components/Addpost';
 const Home = () => {
   return (
     <>
-      <Navbar />
       <div className="home-container">
         <div className="leftbar">
           <Leftbar />

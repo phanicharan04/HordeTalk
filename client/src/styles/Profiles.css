@@ -1,6 +1,6 @@
-.profile-container {
+.profile-main-container {
   display: grid;
-  grid-template-columns: 1.5fr 3fr 1.5fr; /* Adjusted column widths */
+  grid-template-columns: 1.5fr 3fr 1.5fr;
   grid-template-rows: auto 1fr;
   gap: 20px;
   padding: 20px;
@@ -8,14 +8,14 @@
   height: 100vh;
 }
 
-.profile-header {
+.profile-header-section {
   grid-column: 2 / 3;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.profile-card {
+.profile-info-card {
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
@@ -27,33 +27,33 @@
   width: 100%;
 }
 
-.profile-dp {
+.profile-picture {
   width: 120px;
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.profile-info {
+.profile-details {
   text-align: left;
 }
 
-.profile-info h2 {
+.profile-details h2 {
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
-.profile-info p {
+.profile-details p {
   font-size: 1rem;
   margin-bottom: 8px;
   color: #333;
 }
 
-.profile-info p strong {
+.profile-details p strong {
   color: #007bff;
 }
 
-.edit-profile-btn {
+.add-network {
   background-color: #007bff;
   color: white;
   padding: 10px 20px;
@@ -65,83 +65,83 @@
   margin-left: 20px;
 }
 
-.edit-profile-btn:hover {
+.add-network:hover {
   background-color: #0056b3;
 }
 
 /* Networks Section */
-.profile-networks {
+.profile-networks-section {
   grid-column: 1 / 2;
   grid-row: 2 / 3;
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%; /* Increased width */
+  width: 100%;
 }
 
-.profile-networks h3 {
+.profile-networks-section h3 {
   font-size: 1.25rem;
   margin-bottom: 15px;
   color: #333;
 }
 
-.networks-container {
+.networks-section-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.networks-container p {
+.networks-section-container p {
   color: #666;
 }
 
 /* Posts Section */
-.profile-posts {
+.profile-posts-section {
   grid-column: 2 / 4;
   grid-row: 2 / 3;
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%; /* Increased width */
+  width: 100%;
 }
 
-.profile-posts h3 {
+.profile-posts-section h3 {
   font-size: 1.25rem;
   margin-bottom: 15px;
   color: #333;
 }
 
-.posts-container {
+.posts-section-container {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.posts-container p {
+.posts-section-container p {
   color: #666;
 }
 
 @media (max-width: 768px) {
-  .profile-container {
+  .profile-main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .profile-header {
+  .profile-header-section {
     flex-direction: column;
     align-items: center;
   }
 
-  .edit-profile-btn {
+  .add-network {
     margin-top: 15px;
     width: 100%;
   }
 
-  .profile-networks,
-  .profile-posts {
+  .profile-networks-section,
+  .profile-posts-section {
     width: 100%;
     margin-top: 20px;
   }

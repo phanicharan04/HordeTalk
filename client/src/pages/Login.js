@@ -12,7 +12,9 @@ const Login = () => {
     e.preventDefault()
 
     try {
-      await axios.post(`${process.env.REACT_APP_backendUserURL}/login`, { email, password })
+      const {data} = await axios.post(`${process.env.REACT_APP_backendUserURL}/login`, { email, password })
+      localStorage.setItem("token",data.token)
+      localStorage.setItem("user",data)
       
       // Navigate to home page after successful login
       navigate('/home')

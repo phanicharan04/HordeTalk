@@ -4,7 +4,7 @@ import { addPost, deletePost, likePost, updatePost, uploadImg, viewAllPosts, vie
 
 const postRouter = express.Router();
 
-postRouter.route("/addpost").post(validateToken,addPost)
+postRouter.route("/addpost").post(addPost)  //add validate token later here
 
 postRouter.route("/likepost/:postId").post(validateToken,likePost)
 

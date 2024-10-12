@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema(
     {
         "fname": String,
         "lname": String,
-        "username": {type:String,
+        "bio": {type:String,
                      unique:true,
                     },
         "age": Number,
@@ -18,7 +18,11 @@ const userSchema = new mongoose.Schema(
         "dp":{
             type:String,
             default:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
-        }
+        },
+        networks: [{
+            type:mongoose.Schema.Types.ObjectId,
+            ref: 'User', // Referencing the User model
+          }]
     }
 )
 

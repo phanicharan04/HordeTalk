@@ -6,10 +6,27 @@ import profile from "../logos/profile.png";
 import logo from "../logos/logo.png";
 import home from "../logos/home.gif";
 import chat from "../logos/chat.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
-  const [activeIcon, setActiveIcon] = useState('home');
+  const [activeIcon, setActiveIcon] = useState(localStorage.getItem('activeIcon') || '');
+
+  useEffect(() => {
+    // Update localStorage whenever activeIcon changes
+    if (activeIcon) {
+      localStorage.setItem('activeIcon', activeIcon);
+    }
+  }, [activeIcon]);
+
+  const handleClick = (icon) => {
+    if (icon === 'profile') {
+      setActiveIcon(''); // Clear active state when profile is clicked
+      localStorage.removeItem('activeIcon'); // Remove from localStorage when profile is clicked
+    } else {
+      setActiveIcon(icon); // Set active state for other icons
+    }
+  };
+
   return (
     <div className="navbarContainer">
       <div className="navbar-left">
@@ -29,25 +46,25 @@ export default function Navbar() {
       <div className="navbar-right">
         <div className="navbarIcons">
           <div className="navbarIconItem">
-            <Link to="/home" className={activeIcon === 'home' ? 'active' : ''} onClick={() => setActiveIcon('home')}>
+            <Link to="/home" className={activeIcon === 'home' ? 'active' : ''} onClick={() => handleClick('home')}>
               <img src={home} alt="Home" className="icon" />
             </Link>
           </div>
           <div className="navbarIconItem">
-            <Link to="/friends" className={activeIcon === 'friends' ? 'active' : ''} onClick={() => setActiveIcon('friends')}>
+            <Link to="/friends" className={activeIcon === 'friends' ? 'active' : ''} onClick={() => handleClick('friends')}>
               <img src={friends} alt="Friends" className="icon" />
             </Link>
           </div>
           <div className="navbarIconItem">
-            <Link to="/chat" className={activeIcon === 'chat' ? 'active' : ''} onClick={() => setActiveIcon('chat')}>
+            <Link to="/chat" className={activeIcon === 'chat' ? 'active' : ''} onClick={() => handleClick('chat')}>
               <img src={chat} alt="Chat" className="icon" />
             </Link>
           </div>
-          <Link to="/profile">
-          <img src={profile} alt="Profile" className="navbarImg" />
-        </Link>
+          <Link to="/profile" onClick={() => handleClick('profile')}>
+            <img src={profile} alt="Profile" className="navbarImg" />
+          </Link>
+        </div>
       </div>
-    </div>
     </div>
   );
 }
