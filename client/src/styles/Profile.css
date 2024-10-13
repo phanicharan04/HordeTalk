@@ -117,10 +117,65 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  cursor: pointer;
 }
 
-.posts-container p {
-  color: #666;
+
+
+.post-card {
+  background-color: white;
+  border: 1px solid #e1e1e1;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 700px;
+  width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Style for post description */
+.post-author {
+  font-size: 15px;
+  color: #534e4e;
+  margin-bottom: 10px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+.posted-time{
+  color: #585050;
+  font-size: 13px;
+}
+.post-desc {
+  font-size: 16px;
+  color: #000000;
+  margin-bottom: 10px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+/* Style for post image */
+.post-image {
+  max-width: 120px;
+  height: auto;
+  margin-right: 15px;
+  border-radius: 5px;
+}
+
+/* Flexbox to align text and image side by side */
+.post-content {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.post-details {
+  flex-grow: 1;
+}
+
+.post-likes {
+  font-size: 14px;
+  color: #777;
+  margin-top: 5px;
 }
 
 @media (max-width: 768px) {

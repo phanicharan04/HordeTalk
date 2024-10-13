@@ -5,8 +5,7 @@ const userSchema = new mongoose.Schema(
     {
         "fname": String,
         "lname": String,
-        "bio": {type:String,
-                     unique:true,
+        "bio": {type:String
                     },
         "age": Number,
         "email": {type:String,
@@ -14,7 +13,10 @@ const userSchema = new mongoose.Schema(
                   required:true
                  },
         "password": String,
-        "mobile": String,
+        "mobile": {type:String,
+                  unique:true,
+                  required:true
+                 },
         "dp":{
             type:String,
             default:"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"

@@ -4,23 +4,23 @@ import { Route, Routes } from 'react-router-dom';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
-import Profiles from './pages/Profiles';
 import UserContext from './context/UserContext';
-import Navbar from './components/Navbar';
+import ProfileById from './pages/ProfileById';
+import UserPost from './pages/UserPost';
 
 function App() {
   return (
     <div className="app">
       <Routes>
-        <Route element={<Signup/>} path='/'/>
-        <Route element={<Login/>} path='/login'/>
+        <Route element={<Login/>} path='/'/>
+        <Route element={<Signup/>} path='/signup'/>
       </Routes>
-      <Navbar/>
       <UserContext>
       <Routes>
         <Route element={<Home/>} path='/home' />
         <Route element={<Profile/>} path='/profile' />
-        <Route element={<Profiles/>} path='/profiles/:id' />
+        <Route element={<ProfileById/>} path='/profiles/:id' />
+        <Route element={<UserPost/>} path='/mypost/:id' />
       </Routes>
       </UserContext>
       </div>

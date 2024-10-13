@@ -1,87 +1,92 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import '../styles/Signup.css'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import axios from 'axios';
+import '../styles/Signup.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
     fname: '',
     lname: '',
-    username: '',
+    age: '',
     email: '',
     password: '',
     mobile: '',
-    dp: null,
-  })
+    
+  });
 
   const handleChange = (e) => {
-    const { id, value } = e.target
-    setFormData({ ...formData, [id]: value })
-  }
+    const { id, value } = e.target;
+    setFormData({ ...formData, [id]: value });
+  };
 
-  const handleFileChange = (e) => {
-    setFormData({ ...formData, dp: e.target.files[0] })
-  }
-  
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const signupData = new FormData()
-
-    // Append form data
-    for (const key in formData) {
-      signupData.append(key, formData[key])
-    }
-
+    e.preventDefault();
     try {
-      await axios.post(`${process.env.REACT_APP_backendUserURL}/signup`, signupData)
-      alert('Signup successful!')
-      navigate('/home')
+      await axios.post(`${process.env.REACT_APP_backendUserURL}/signup`, formData);
+      alert('Signup successful!');
+      navigate('/');
     } catch (error) {
-      console.error('Error signing up:', error)
-      alert('Signup failed. Please try again.')
+      console.error('Error signing up:', error);
+      alert('Signup failed. Please try again.');
     }
-  }
+  };
 
   return (
-    <div className='addUser'>
-      <h3>Sign Up</h3>
-      <form className='addUserForm' onSubmit={handleSubmit}>
-        <div className='inputGroup'>
-          <label htmlFor='fname'>First Name</label>
-          <input type='text' id='fname' placeholder='Enter Your First Name' onChange={handleChange} required />
-          
-          <label htmlFor='lname'>Last Name</label>
-          <input type='text' id='lname' placeholder='Enter Your Last Name' onChange={handleChange} required />
-          
-          <label htmlFor='username'>User Name</label>
-          <input type='text' id='username' placeholder='Enter Your UserName' onChange={handleChange} required />
-
-          <label htmlFor='age'>Age</label>
-          <input type='number' id='age' placeholder='Enter Your Age' onChange={handleChange} required />
-          
-          <label htmlFor='email'>Email</label>
-          <input type='email' id='email' placeholder='Enter Your Email' onChange={handleChange} required />
-          
-          <label htmlFor='password'>Password</label>
-          <input type='password' id='password' placeholder='Enter Your Password' onChange={handleChange} required />
-          
-          <label htmlFor='mobile'>Mobile Number</label>
-          <input type='text' id='mobile' placeholder='Enter Your Mobile Number' onChange={handleChange} required />
-          
-          <label htmlFor='dp'>Profile Picture</label>
-          <input type='file' id='dp' onChange={handleFileChange} />
-          
-          <button type='submit'>Register</button>
+    <div className="signup-container">
+      <h1 className="logo">HordeTalk</h1>
+      <h2>Create a new account</h2>
+      <form className="signup-form" onSubmit={handleSubmit}>
+        <div className="input-row">
+          <input
+            type="text"
+            id="fname"
+            placeholder="First name"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            id="lname"
+            placeholder="Surname"
+            onChange={handleChange}
+            required
+          />
         </div>
+          <input
+            type="number"
+            id="age"
+            placeholder="Age"
+            onChange={handleChange}
+            required
+          />
+        <input
+          type="text"
+          id="mobile"
+          placeholder="Mobile number"
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="email"
+          id="email"
+          placeholder="Email address"
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          id="password"
+          placeholder="New password"
+          onChange={handleChange}
+          required
+        />
+        <button type="submit" className="signup-button">Sign Up</button>
       </form>
-      <div className='login'>
-        <p>Already have an account?</p>
-        <Link to='/login' className="btn btn-success">Login</Link>
-      </div>
+      <Link to="/" className="login-link">Already have an account?</Link>
     </div>
-  )
-}
+  );
+};
 
-export default Signup
+export default Signup;

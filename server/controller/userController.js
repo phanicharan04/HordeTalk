@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import generateToken from "../config/token.js";
 export const signUpUser=async(req,res)=>{
     try {
-        const{fname,lname,username,age,email,password,mobile}=req.body
+        const{fname,lname,bio,age,email,password,mobile}=req.body
         // console.log(req.body)
         const isUserExisting=await user.findOne({email:email})
         if(isUserExisting){
@@ -13,7 +13,6 @@ export const signUpUser=async(req,res)=>{
             const newUser=await user.create({
                 fname,
                 lname,
-                username,
                 age,
                 email,
                 password,
@@ -36,13 +35,12 @@ export const signUpUser=async(req,res)=>{
 
 
 export const loginUser = async (req,res)=>{
-    const {email,username,password}=req.body
+    const {email,password}=req.body
     
     try {
         const curruser = await user.findOne({
             $or:[
-                {email:email},
-                {username:username}
+                {email:email}
             ]
         });
         
@@ -55,7 +53,7 @@ export const loginUser = async (req,res)=>{
                 res.status(200).json({
                     _id:curruser._id,
                     email:curruser.email,
-                    username:curruser.username,
+                    bio:curruser.bio,
                     name:curruser.fname+" "+curruser.lname,
                     token:generateToken(curruser?._id)
                 })
@@ -78,7 +76,7 @@ export const viewUserById = async (req, res) => {
     try {
         const userId = req.params.userId;
         const userProfile = await user.findById(userId);
-        console.log(userId);
+        // console.log(userId);
         
         if (!userProfile) {
             return res.status(404).send("User Not Found");
@@ -88,7 +86,7 @@ export const viewUserById = async (req, res) => {
             _id: userProfile._id,
             fname: userProfile.fname,
             lname: userProfile.lname,
-            username: userProfile.username,
+            bio: userProfile.bio,
             age: userProfile.age,
             email: userProfile.email,
             mobile: userProfile.mobile,
@@ -116,7 +114,7 @@ export const viewProfile = async (req, res) => {
             _id: userProfile._id,
             fname: userProfile.fname,
             lname: userProfile.lname,
-            username: userProfile.username,
+            bio: userProfile.bio,
             age: userProfile.age,
             email: userProfile.email,
             mobile: userProfile.mobile,
@@ -131,7 +129,7 @@ export const viewProfile = async (req, res) => {
 export const updateProfile = async (req, res) => {
     try {
         const userId = req.params.id;
-        const { fname, lname, username, age, email, mobile } = req.body;
+        const { fname, lname, bio, age, email, mobile } = req.body;
         
         const userToUpdate = await user.findById(userId);
         
@@ -141,7 +139,7 @@ export const updateProfile = async (req, res) => {
 
         userToUpdate.fname = fname || userToUpdate.fname;
         userToUpdate.lname = lname || userToUpdate.lname;
-        userToUpdate.username = username || userToUpdate.username;
+        userToUpdate.bio = bio || userToUpdate.bio;
         userToUpdate.age = age || userToUpdate.age;
         userToUpdate.email = email || userToUpdate.email;
         userToUpdate.mobile = mobile || userToUpdate.mobile;
@@ -152,7 +150,7 @@ export const updateProfile = async (req, res) => {
             _id: updatedUser._id,
             fname: updatedUser.fname,
             lname: updatedUser.lname,
-            username: updatedUser.username,
+            bio: updatedUser.bio,
             age: updatedUser.age,
             email: updatedUser.email,
             mobile: updatedUser.mobile,

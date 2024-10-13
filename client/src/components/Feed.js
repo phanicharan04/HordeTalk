@@ -43,21 +43,21 @@ const Feed = () => {
   return (
     <div className='feed-container'>
       {data.map((post, index) => (
-        <div key={index} className='postcard'>
-          <div className='post-header'>
-            <img onClick={() => handleClick(post.authorId._id)} src={post.authorId.dp || 'default-dp.jpg'} alt='User DP' className='user-dp' />
+        <div key={index} className='feed-postcard'>
+          <div className='feed-post-header'>
+            <img onClick={() => handleClick(post.authorId._id)} src={post.authorId.dp || 'default-dp.jpg'} alt='User DP' className='feed-user-dp' />
             <div>
-              <span onClick={() => handleClick(post.authorId._id)} className='author-name'>{post.authorId.fname || 'Unknown Author'}</span>
+              <span onClick={() => handleClick(post.authorId._id)} className='feed-author-name'>{post.authorId.fname || 'Unknown Author'}</span>
               <span className='post-time'>{new Date(post.createdAt).toLocaleString()}</span>
             </div>
           </div>
-          <div className='post-content'>
-            {post.desc && <p className='post-description'>{post.desc}</p>}
+          <div className='feed-post-content'>
+            {post.desc && <p className='feed-post-description'>{post.desc}</p>}
             {post.postImage && (
-              <img src={post.postImage} alt="Post" className='post-image' />
+              <img src={post.postImage} alt="Post" className='feed-post-image' />
             )}
           </div>
-          <div className='post-actions'>
+          <div className='feed-post-actions'>
             <img src={likeGif} alt="Like" onClick={() => handleLike(post._id)} className='action-gif' />
             <img src={shareGif} alt="Share" onClick={() => handleShare(post._id)} className='action-gif' />
             <img src={saveGif} alt="Save" onClick={() => handleSave(post._id)} className='action-gif' />

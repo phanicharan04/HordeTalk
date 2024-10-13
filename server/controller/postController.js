@@ -102,6 +102,18 @@ export const viewPostById = async (req, res) => {
 
 }
 
+export const viewPostByAuthor = async (req, res) => {
+  const {authorId}=req.params
+  
+  try {
+      const currpost = await post.find({authorId:authorId})
+      res.status(200).send(currpost)
+  } catch (error) {
+      res.status(404).send(error.message)
+  }
+
+}
+
 export const deletePost = async (req, res) =>{
     const {postId} = req.params;
     await post.deleteOne({_id:postId})

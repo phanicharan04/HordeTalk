@@ -3,7 +3,7 @@
   margin: 0 auto;
 }
 
-.postcard {
+.feed-postcard {
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 15px;
@@ -13,13 +13,13 @@
   transition: box-shadow 0.3s ease;
 }
 
-.post-header {
+.feed-post-header {
   display: flex;
   align-items: center;
   margin-bottom: 15px;
 }
 
-.user-dp {
+.feed-user-dp {
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -28,7 +28,7 @@
   cursor: pointer;
 }
 
-.author-name {
+.feed-author-name {
   font-weight: bold;
   font-size: 1.2rem;
   margin-right: 10px;
@@ -40,23 +40,23 @@
   color: #888;
 }
 
-.post-content {
+.feed-post-content {
   margin-bottom: 15px;
 }
 
-.post-description {
+.feed-post-description {
   font-size: 1rem;
   color: #333;
   margin-bottom: 10px;
 }
 
-.post-image {
+.feed-post-image {
   width: 100%;
   height: auto;
   border-radius: 8px;
 }
 
-.post-actions {
+.feed-post-actions {
   display: flex;
   justify-content: space-around;
   margin-top: 15px;
@@ -77,10 +77,10 @@
   .feed-container {
     width: 100%;
   }
-  .postcard {
+  .feed-postcard {
     margin: 10px;
   }
-  .user-dp {
+  .feed-user-dp {
     width: 40px;
     height: 40px;
   }
