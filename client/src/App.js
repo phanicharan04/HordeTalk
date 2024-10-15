@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 import UserContext from './context/UserContext';
 import ProfileById from './pages/ProfileById';
 import UserPost from './pages/UserPost';
+import UpdateProfile from './components/Updateprofile';
 
 function App() {
   return (
@@ -19,8 +20,9 @@ function App() {
       <Routes>
         <Route element={<Home/>} path='/home' />
         <Route element={<Profile/>} path='/profile' />
+        <Route element={<UpdateProfile/>} path='updateprofile/:userId' />
         <Route element={<ProfileById/>} path='/profiles/:id' />
-        <Route element={<UserPost/>} path='/mypost/:id' />
+        <Route element={<UserPost/>} path='/mypost/:postId' />
       </Routes>
       </UserContext>
       </div>

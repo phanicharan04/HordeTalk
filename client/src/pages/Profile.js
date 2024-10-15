@@ -8,15 +8,35 @@ import { useNavigate } from 'react-router-dom';
 const Profile = () => {
   const { user } = useAuth();
   const [posts, setPosts] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  
+  async function delPost(postid) {
+    try {
+      console.log(postid);
+      
+      const { data } = await axios.get(`${process.env.REACT_APP_backendPostURL}/deletepost/${postid}`);
+      // setPosts(data);  // Save posts to state
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  }
+
+
   async function UserPost() {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_backendPostURL}/mypost/${user?._id}`);
+      const token = localStorage.getItem('token');
+      const { data } = await axios.get(`${process.env.REACT_APP_backendPostURL}/mypost/${user?._id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      });
       setPosts(data);  // Save posts to state
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
   }
+ 
+  
 
   useEffect(() => {
     if (user?._id) {
@@ -24,8 +44,13 @@ const Profile = () => {
     }
   }, [user]);
   
+  // Navigate to post details page when a post is clicked
   const handleClick = (postId) => {
-    navigate(`/mypost/${postId}`)
+    navigate(`/mypost/${postId}`);
+  }
+  
+  const handleClickUpdate = (userId) =>{
+    navigate(`/updateprofile/${userId}`)
   }
 
   return (
@@ -47,7 +72,7 @@ const Profile = () => {
             <p><strong>Mobile:</strong> {user?.mobile}</p>
           </div>
         </div>
-        <button className="edit-profile-btn">Edit Profile</button>
+        <button className="edit-profile-btn" onClick={() => handleClickUpdate(user._id)}>Edit Profile</button>
       </div>
 
       <div className="profile-posts">
@@ -55,7 +80,12 @@ const Profile = () => {
         <div className="posts-container">
         {posts.length > 0 ? (
               posts.map(post => (
-                <div key={post._id} className="post-card" >
+                <>
+                <div 
+                  key={post._id} 
+                  className="post-card" 
+                  onClick={() => handleClick(post._id)}  // Trigger onClick to navigate to post details
+                >
                   <p className="post-author">{user.fname} {user.lname}</p>
                   <p className='posted-time'><i>Posted at:</i> {new Date(post.createdAt).toLocaleString()}</p>
                   <p className="post-desc">{post.desc}</p>
@@ -64,6 +94,8 @@ const Profile = () => {
                     <p className="post-likes"><strong>Likes:</strong> {post.likedBy.length}</p>
                   </div>
                 </div>
+                  {/* <button onClick={()=>{delPost(post._id)}}>delete</button> */}
+                </>
               ))
             ) : (
               <p>No posts yet</p>

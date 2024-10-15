@@ -4,17 +4,17 @@ import { addPost, deletePost, likePost, updatePost, uploadImg, viewAllPosts, vie
 
 const postRouter = express.Router();
 
-postRouter.route("/addpost").post(addPost)  //add validate token later here
+postRouter.route("/addpost").post(validateToken,addPost)
 
 postRouter.route("/likepost/:postId").post(validateToken,likePost)
 
 postRouter.route("/updatepost/:postId").put(validateToken,updatePost)
 
-postRouter.route("/findallposts").get(viewAllPosts)   //add validate token later here
+postRouter.route("/findallposts").get(validateToken,viewAllPosts)
 
-postRouter.route("/findpostbyid").get(validateToken,viewPostById)
+postRouter.route("/findpostbyid/:postId").get(validateToken,viewPostById) 
 
-postRouter.route("/mypost/:authorId").get(viewPostByAuthor)       //add validate token later here
+postRouter.route("/mypost/:authorId").get(validateToken,viewPostByAuthor)       
 
 postRouter.route("/deletepost/:postId").delete(validateToken,deletePost)
 

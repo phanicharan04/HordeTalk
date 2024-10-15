@@ -15,7 +15,7 @@ const Home = () => {
           <Leftbar />
         </div>
         <div className="feed-section">
-          <Addpost />
+          {/* <Addpost /> */}
           <Feed />
         </div>
         <div className="rightbar">

@@ -4,11 +4,13 @@ import Modal from 'react-modal';
 import '../component-styles/Addpost.css';
 import { useAuth } from './../context/UserContext';
 
-const Addpost = ({setsatus,status}) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+const UpdatePost = ({status,postId,settest}) => {
+  const [modalIsOpen, setModalIsOpen] = useState(status || false);
+  const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const { user } = useAuth();
 
   const openModal = () => {
@@ -28,24 +30,25 @@ const Addpost = ({setsatus,status}) => {
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append('body', JSON.stringify({ desc, uId: user?._id })); // Replace with actual user ID
+      formData.append('body', JSON.stringify({ title, desc, uId: user?._id })); // Replace with actual user ID
       if (image) {
         formData.append('image', image);
       }
 
       const token = localStorage.getItem('token'); // Fetch the token from storage
-      await axios.post(`${process.env.REACT_APP_backendPostURL}/addpost`, formData, {
+      await axios.put(`${process.env.REACT_APP_backendPostURL}/updatepost/${postId}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
-      setsatus(!status)
+        settest(false)
+      setTitle('');
       setDesc('');
       setImage(null);
       closeModal();
       setLoading(false);
-      alert('Post added successfully!');
+      alert('Post updated successfully!');
     } catch (error) {
       console.error('Error adding post:', error);
       setLoading(false);
@@ -54,19 +57,7 @@ const Addpost = ({setsatus,status}) => {
   };
 
   return (
-    <div className="addpost-container">
-      <div className="user-profile">
-        <img
-          src="https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
-          alt="User Avatar"
-          className="profile-avatar"
-        />
-      </div>
-      <div className="addpost-input" onClick={openModal}>
-        <input type="text" placeholder="What's on your mind? 💡" readOnly />
-      </div>
-
-      {/* Modal for adding post */}
+   
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
@@ -75,7 +66,7 @@ const Addpost = ({setsatus,status}) => {
       >
         {/* Close button (X mark) */}
         <button className="modal-close-btn" onClick={closeModal}>×</button>
-        <h2>Create Post</h2>
+        <h2>Update Post</h2>
         <form onSubmit={handlePostSubmit}>
           <div className="form-group">
             <label htmlFor="desc">Description</label>
@@ -86,10 +77,6 @@ const Addpost = ({setsatus,status}) => {
               required
             ></textarea>
           </div>
-          <div className="form-group">
-            <label htmlFor="image">Upload Image</label>
-            <input type="file" id="image" onChange={handleImageUpload} />
-          </div>
           <div className="form-actions">
             <button type="submit" disabled={loading}>
               {loading ? 'Posting...' : 'Post'}
@@ -97,8 +84,8 @@ const Addpost = ({setsatus,status}) => {
           </div>
         </form>
       </Modal>
-    </div>
+   
   );
 };
 
-export default Addpost;
+export default  UpdatePost 

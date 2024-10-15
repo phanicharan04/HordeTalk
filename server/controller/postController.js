@@ -1,6 +1,7 @@
 import post from "../model/Post.js";
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
+import { json } from "stream/consumers";
 
 dotenv.config()
 const cloudname=process.env.CLOUD_NAME
@@ -21,12 +22,11 @@ const uploadToCloudinary = async (buffer) => {
 };
 
 export const addPost = async (req, res) => {
-  // const { title, desc, uId } = req.body;
   let {body}=req.body
   body=JSON.parse(body)
   console.log(body);
   
-  const { title, desc, uId }=body
+  const { desc, uId }=body
   let result="";
 
   try {
@@ -46,7 +46,6 @@ export const addPost = async (req, res) => {
       
     }
     const newPost = await post.create({
-      title,
       desc,
       authorId: uId,
       postImage:result?.url || ""
@@ -74,7 +73,12 @@ export const likePost = async (req, res) => {
 
 export const updatePost = async (req, res) => {
     const {postId} = req.params;
-    const {desc} = req.body;
+    console.log(postId);
+    
+    let {body}=req.body
+    body= JSON.parse(body);
+    const {desc} =body
+    
     const newPostObject = await post.findByIdAndUpdate(
         postId,{
             desc:desc
@@ -92,9 +96,11 @@ export const viewAllPosts = async (req, res) => {
 }
 
 export const viewPostById = async (req, res) => {
-    const {postId}=req.query
+    const {postId}=req.params
+
+    
     try {
-        const currpost = await post.findById(postId)
+        const currpost = await post.findById({_id:postId})
         res.status(200).send(currpost)
     } catch (error) {
         res.status(404).send(error.message)
@@ -104,9 +110,13 @@ export const viewPostById = async (req, res) => {
 
 export const viewPostByAuthor = async (req, res) => {
   const {authorId}=req.params
+
+  
   
   try {
       const currpost = await post.find({authorId:authorId})
+      console.log(currpost);
+      
       res.status(200).send(currpost)
   } catch (error) {
       res.status(404).send(error.message)

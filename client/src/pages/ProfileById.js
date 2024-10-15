@@ -11,7 +11,12 @@ const ProfileById = () => {
 
   // Fetch user details from backend
   async function getUser() {
-    const { data } = await axios.get(`${process.env.REACT_APP_backendUserURL}/viewuser/${id}`)
+    const token = localStorage.getItem('token');
+    const { data } = await axios.get(`${process.env.REACT_APP_backendUserURL}/viewuser/${id}`,{
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
     setUser(data)
     console.log(data)
   }
@@ -22,7 +27,12 @@ const ProfileById = () => {
   
   async function getPost() {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_backendPostURL}/mypost/${user._id}`);
+      const token = localStorage.getItem('token');
+      const { data } = await axios.get(`${process.env.REACT_APP_backendPostURL}/mypost/${user._id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      });
       setPosts(data);  // Save posts to state
     } catch (error) {
       console.error("Error fetching posts:", error);

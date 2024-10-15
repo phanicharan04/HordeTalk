@@ -6,6 +6,7 @@ import shareGif from '../logos/shareicon.gif'
 import saveGif from '../logos/saveicon.gif'
 import { useAuth } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
+import Addpost from './Addpost'
 
 const Feed = () => {
   const posturl = process.env.REACT_APP_backendPostURL
@@ -13,16 +14,22 @@ const Feed = () => {
   const [data, setData] = useState([])
   const {user}= useAuth()
   console.log(user);
+  const [status,setsatus]=useState(true)
   
   async function getPosts() {
-    const { data } = await axios.get(`${posturl}/findallposts`)
+    const token = localStorage.getItem('token');
+    const { data } = await axios.get(`${posturl}/findallposts`,{
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
     setData(data)
     console.log(data)
   }
 
   useEffect(() => {
     getPosts()
-  }, [])
+  }, [status])
 
   const handleClick = (postId) => {
     navigate(`/profiles/${postId}`)
@@ -39,9 +46,11 @@ const Feed = () => {
   const handleSave = (postId) => {
     console.log("Saved post: ", postId)
   }
+console.log(status);
 
   return (
     <div className='feed-container'>
+      <Addpost setsatus={setsatus} status={status}/>
       {data.map((post, index) => (
         <div key={index} className='feed-postcard'>
           <div className='feed-post-header'>
