@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import "../component-styles/Navbar.css";
-import search from "../logos/search.gif";
 import friends from "../logos/friendsicon.gif";
 import profile from "../logos/profile.png";
 import logo from "../logos/logo.png";
 import home from "../logos/home.gif";
 import chat from "../logos/chat.png";
 import { useState, useEffect } from "react";
+import Search from "./Search";
 
 export default function Navbar() {
   const [activeIcon, setActiveIcon] = useState(localStorage.getItem('activeIcon') || '');
@@ -38,10 +38,7 @@ export default function Navbar() {
         </div>
       </div>
       <div className="navbar-center">
-        <div className="searchbar">
-          <img src={search} alt="Search" className="searchIcon" />
-          <input placeholder="Search" className="searchInput" />
-        </div>
+        <Search/>
       </div>
       <div className="navbar-right">
         <div className="navbarIcons">

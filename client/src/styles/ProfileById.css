@@ -65,8 +65,24 @@
   margin-left: 20px;
 }
 
-.add-network:hover {
+.remove-network{
+  background-color: #08c661;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+  margin-left: 20px;
+}
+
+.profile-main-container .add-network:hover {
   background-color: #0056b3;
+}
+
+.profile-main-container .remove-network:hover {
+  background-color: #0ea152;
 }
 
 /* Networks Section */
@@ -135,7 +151,7 @@
     align-items: center;
   }
 
-  .add-network {
+  .add-network .remove-network{
     margin-top: 15px;
     width: 100%;
   }

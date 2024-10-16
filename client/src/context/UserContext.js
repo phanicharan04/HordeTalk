@@ -12,6 +12,7 @@ const UserContext = ({ children }) => {
     try {
       const userURL = process.env.REACT_APP_backendUserURL;
       const token = localStorage.getItem("token");
+    
 
       if (!token) {
         console.error('No token found in localStorage');
@@ -24,7 +25,7 @@ const UserContext = ({ children }) => {
         },
       });
 
-      setUser(data);
+      setUser(data?.userProfile);
     } catch (error) {
       console.error('Error validating token or fetching profile:', error.message);
     }

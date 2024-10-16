@@ -57,7 +57,7 @@ const Addpost = ({setsatus,status}) => {
     <div className="addpost-container">
       <div className="user-profile">
         <img
-          src="https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+          src= { user?.dp ||"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"}
           alt="User Avatar"
           className="profile-avatar"
         />

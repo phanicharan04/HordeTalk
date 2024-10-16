@@ -52,6 +52,7 @@ body {
   height: 40px;
   background-color: #ebeeed;
   border-radius: 30px;
+  position: relative;
   display: flex;
   align-items: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -71,7 +72,30 @@ body {
   background-color: #ebeeed;
   color: #2C3E50;
 }
-
+.navbar-center .searchbar 
+  .search-results {
+    position: absolute;
+    top: 110%; /* Position below the input */
+    left: 0;
+    right: 0;
+    max-height: 200px; /* Limit height of results */
+    overflow-y: auto; /* Scroll if needed */
+    background-color: #fff;
+    /* border: 1px solid #ccc; */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Make sure results are above other content */
+  }
+  
+  .search-results div {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .search-results div:hover {
+    background-color: #f0f0f0; /* Highlight on hover */
+  }
 .searchInput:focus {
   outline: none;
 }

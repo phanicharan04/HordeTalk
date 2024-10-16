@@ -3,12 +3,13 @@ import '../styles/Profile.css';
 import { useAuth } from './../context/UserContext';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
+  console.log(user);
   
   async function delPost(postid) {
     try {
@@ -74,7 +75,13 @@ const Profile = () => {
         </div>
         <button className="edit-profile-btn" onClick={() => handleClickUpdate(user._id)}>Edit Profile</button>
       </div>
-
+      <div>
+        <button className='logout' onClick={()=>{
+          localStorage.removeItem("token")
+          setUser({})
+          navigate('/')
+        }}>Logout</button>
+      </div>
       <div className="profile-posts">
         <h3>Posts</h3>
         <div className="posts-container">
@@ -105,6 +112,20 @@ const Profile = () => {
 
       <div className="profile-networks">
         <h3>Networks</h3>
+        {user?.networks && (
+  <div className="network-list">
+    {user.networks.map((e, i) => (
+      <Link to={`/profiles/${e?._id}`}>
+
+      <div key={i} className="network-item">
+        <img src={e?.dp} alt={`${e.fname}'s profile`} />
+        <h3>{e.fname}</h3>
+      </div>
+      </Link>
+    ))}
+  </div>
+)}
+
         {/* Render user's networks/friends here */}
         <div className="networks-container">
           <p>No friends added yet</p>

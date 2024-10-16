@@ -95,7 +95,7 @@ export const viewAllUsers=async(req,res)=>{
 export const viewUserById = async (req, res) => {
     try {
         const userId = req.params.userId;
-        const userProfile = await user.findById(userId);
+        const userProfile = await user.findById(userId).populate('networks','-password');
         // console.log(userId);
         
         if (!userProfile) {
@@ -103,13 +103,7 @@ export const viewUserById = async (req, res) => {
         }
 
         res.status(200).json({
-            _id: userProfile._id,
-            fname: userProfile.fname,
-            lname: userProfile.lname,
-            bio: userProfile.bio,
-            age: userProfile.age,
-            email: userProfile.email,
-            mobile: userProfile.mobile,
+          userProfile
         });
     } catch (error) {
         res.status(500).send(error.message);
@@ -124,20 +118,14 @@ export const viewProfile = async (req, res) => {
             return res.status(400).send("User ID missing in request.");
         }
         
-        const userProfile = await user.findById(userId);
+        const userProfile = await user.findById(userId).populate('networks','-password');
 
         if (!userProfile) {
             return res.status(404).send("User Not Found");
         }
 
         res.status(200).json({
-            _id: userProfile._id,
-            fname: userProfile.fname,
-            lname: userProfile.lname,
-            bio: userProfile.bio,
-            age: userProfile.age,
-            email: userProfile.email,
-            mobile: userProfile.mobile,
+          userProfile
         });
     } catch (error) {
         console.error("Error in viewProfile:", error.message); // Log the error message
@@ -198,16 +186,44 @@ export const updateProfile = async (req, res) => {
     }
   };
 
-export const Networks = async (req, res) => {
-    const { userId } = req.body;
-    const newPostObject = await post.findByIdAndUpdate(
-      postId,
-      {
-        $addToSet: { networks: userId },
-      },
-      {
-        new: true,
-      }
-    ).populate("networks","-password")
-    res.status(201).send(newPostObject)
+  export const addToNetworks = async (req, res) => {
+    const { userId } = req.body; // The user to be added
+    const currentUserId = req.userId; // The logged-in user (assuming you have middleware to attach the logged-in user)
+  console.log(userId);
+  
+    try {
+      const networkuser = await user.findByIdAndUpdate(
+        currentUserId,
+        { $addToSet: { networks: userId } }, // Add to network without duplicates
+        { new: true }
+      ).populate('networks', '-password'); // Populate networks without passwords
+      await user.findByIdAndUpdate(
+        userId,
+        { $addToSet: { networks: currentUserId } }, // Add to network without duplicates
+        { new: true }
+      ).populate('networks', '-password'); // Populate networks without passwords
+  
+      res.status(200).json('Freind Added');
+    } catch (error) {
+        console.log(error);
+        
+      res.status(500).json({ message: "Error adding to networks", error });
+    }
   };
+  
+  export const search = async (req, res) => {
+    try {
+      const { name } = req.body;
+  
+      // Use a regex for case-insensitive search
+      const data = await user.find({
+        fname: { $regex: name, $options: 'i' } // 'i' for case-insensitive
+      });
+  
+      res.json(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  };
+  
