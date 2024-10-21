@@ -24,7 +24,7 @@ const uploadToCloudinary = async (buffer) => {
 export const addPost = async (req, res) => {
   let {body}=req.body
   body=JSON.parse(body)
-  console.log(body);
+  // console.log(body);
   
   const { desc, uId }=body
   let result="";
@@ -56,24 +56,48 @@ export const addPost = async (req, res) => {
   }
 };
 
-export const likePost = async (req, res) => {
+export const toggleLikePost = async (req, res) => {
   const { postId } = req.params;
-  const { userId } = req.body;
-  const newPostObject = await post.findByIdAndUpdate(
-    postId,
-    {
-      $addToSet: { likedBy: userId },
-    },
-    {
-      new: true,
+  const userId  = req.userId;
+
+  try {
+    const postObject = await post.findById(postId);
+    
+    if (!postObject) {
+      return res.status(404).send({ message: "Post not found" });
     }
-  ).populate("likedBy","-password")
-  res.status(201).send(newPostObject)
+
+    // Check if the user already liked the post
+    const isLiked = postObject.likedBy.includes(userId);
+
+    if (isLiked) {
+      // If liked, remove the like (dislike)
+      const updatedPost = await post.findByIdAndUpdate(
+        postId,
+        { $pull: { likedBy: userId } },
+        { new: true }
+      ).populate("likedBy", "-password");
+
+      return res.status(200).send(updatedPost.likedBy);
+    } else {
+      // If not liked, add the like
+      const updatedPost = await post.findByIdAndUpdate(
+        postId,
+        { $addToSet: { likedBy: userId } },
+        { new: true }
+      ).populate("likedBy", "-password");
+
+      return res.status(201).send(updatedPost.likedBy);
+    }
+  } catch (error) {
+    return res.status(500).send({ message: "Server Error", error });
+  }
 };
+
 
 export const updatePost = async (req, res) => {
     const {postId} = req.params;
-    console.log(postId);
+    // console.log(postId);
     
     let {body}=req.body
     body= JSON.parse(body);
@@ -115,7 +139,7 @@ export const viewPostByAuthor = async (req, res) => {
   
   try {
       const currpost = await post.find({authorId:authorId})
-      console.log(currpost);
+      // console.log(currpost);
       
       res.status(200).send(currpost)
   } catch (error) {
@@ -138,7 +162,7 @@ export const uploadImg = async (req, res) => {
       return res.status(400).send('No files were uploaded.');
     }
 
-    console.log(req);
+    // console.log(req);
     
     const file = req.files.image; // The uploaded file
     const buffer = file.data; // Access the buffer from the file
@@ -146,9 +170,9 @@ export const uploadImg = async (req, res) => {
     // Upload the buffer to Cloudinary
 
     cloudinary.config({
-      cloud_name: "dnrcizmkk",
-      api_key: "564648445716745",
-      api_secret: "eVw1EB_fS3V6UzDh8yuM2eNoqCA",
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.API_KEY,
+      api_secret: process.env.API_SECRET,
     });
 
     const result = await uploadToCloudinary(buffer);

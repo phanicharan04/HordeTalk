@@ -3,6 +3,7 @@ import user from '../model/User.js';
 
 const validateToken = async (req, res, next) => {
   const authHeader = req?.headers?.authorization;
+
  
   // Check if Authorization header is present
   if (authHeader && authHeader.startsWith('Bearer')) {

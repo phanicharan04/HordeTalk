@@ -1,4 +1,21 @@
+.whole-post-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  height: calc(100vh - 60px); /* Assuming Navbar has a height of 60px */
+}
+
+.whole-post-container > div {
+  margin: 0 20px;
+}
+
 .my-post-container {
+    flex: 5; /* Middle section gets less space but still more than sidebars */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
@@ -7,6 +24,10 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
+  .leftbar, .rightbar {
+    flex: 2; /* Adjust the size, slightly larger than before */
+  }
+
   .my-post-details {
     display: flex;
     flex-direction: column;

@@ -15,7 +15,7 @@ const Leftbar = () => {
           />
           <div className="sidebar-info">
             <h2>{`${user?.fname} ${user?.lname}`}</h2>
-            <p><strong>Bio:</strong> {user?.username}</p>
+            <p><strong>Bio:</strong> {user?.bio}</p>
             <p><strong>Age:</strong> {user?.age}</p>
             <p><strong>Email:</strong> {user?.email}</p>
             <p><strong>Mobile:</strong> {user?.mobile}</p>

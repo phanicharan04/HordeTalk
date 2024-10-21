@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema(
         networks: [{
             type:mongoose.Schema.Types.ObjectId,
             ref: 'User', // Referencing the User model
+          }],
+        saves: [{
+            type:mongoose.Schema.Types.ObjectId,
+            ref: 'Post', // Referencing the User model
           }]
     }
 )

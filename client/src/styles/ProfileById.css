@@ -93,7 +93,7 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
+  width: 100%; /* Increased width */
 }
 
 .profile-networks-section h3 {
@@ -102,14 +102,33 @@
   color: #333;
 }
 
-.networks-section-container {
+.network-item-section{
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  transition: transform 0.2s;
 }
 
-.networks-section-container p {
-  color: #666;
+.network-item-section:hover {
+  transform: scale(1.02);
+}
+
+.network-item-section img {
+  width: 50px; /* Adjust size as needed */
+  height: 50px; /* Maintain aspect ratio */
+  border-radius: 50%; /* Makes image circular */
+  margin-right: 15px; /* Space between image and text */
+}
+
+.network-item-section h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
 }
 
 /* Posts Section */
@@ -154,6 +173,34 @@
   .add-network .remove-network{
     margin-top: 15px;
     width: 100%;
+  }
+
+  .network-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    transition: transform 0.2s;
+  }
+  
+  .network-item:hover {
+    transform: scale(1.02);
+  }
+  
+  .network-item img {
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Maintain aspect ratio */
+    border-radius: 50%; /* Makes image circular */
+    margin-right: 15px; /* Space between image and text */
+  }
+  
+  .network-item h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
   }
 
   .profile-networks-section,

@@ -8,6 +8,7 @@ import UserContext from './context/UserContext';
 import ProfileById from './pages/ProfileById';
 import UserPost from './pages/UserPost';
 import UpdateProfile from './components/Updateprofile';
+import Networks from './pages/Networks';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route element={<Home/>} path='/home' />
         <Route element={<Profile/>} path='/profile' />
+        <Route element={<Networks/>} path='/networks' />
         <Route element={<UpdateProfile/>} path='updateprofile/:userId' />
         <Route element={<ProfileById/>} path='/profiles/:id' />
         <Route element={<UserPost/>} path='/mypost/:postId' />

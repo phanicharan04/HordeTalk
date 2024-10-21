@@ -6,11 +6,11 @@ import Navbar from '../components/Navbar';
 import { useAuth } from '../context/UserContext';
 
 const ProfileById = () => {
-  const [iuser, setUser] = useState({});
+  const [iuser, setIuser] = useState({});
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  const { user } = useAuth();
+  const { user, setUser } = useAuth(); // Assuming setUser updates logged-in user state
 
   // Fetch user details from backend
   const getUser = async () => {
@@ -22,7 +22,7 @@ const ProfileById = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setUser(data.userProfile);
+      setIuser(data.userProfile);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
@@ -58,17 +58,60 @@ const ProfileById = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(user._id,userid);
-      
+
       if (status === 200) {
+        // Update the local user and iuser state after adding the network
+        setUser((prevUser) => ({
+          ...prevUser,
+          networks: [...prevUser.networks, { _id: userid }],
+        }));
+
+        setIuser((prevIuser) => ({
+          ...prevIuser,
+          networks: [...prevIuser.networks, { _id: user._id }],
+        }));
+
+        // Re-fetch the user from backend to ensure consistency
         getUser();
-        // Show toast message if needed
       }
     } catch (error) {
       console.error("Error adding network:", error);
     }
   };
 
+  const removeNetwork = async (userid) => {
+    try {
+      const token = localStorage.getItem('token');
+      const { status,data } = await axios.delete(`${process.env.REACT_APP_backendUserURL}/removenetwork/${userid}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        // Include data to send in DELETE request
+      });
+console.log(data);
+
+      if (status === 200) {
+        // Update the local user and iuser state after removing the network
+        setUser((prevUser) => ({
+          ...prevUser,
+          networks: prevUser.networks.filter((network) => network._id !== userid),
+        }));
+
+        setIuser((prevIuser) => ({
+          ...prevIuser,
+          networks: prevIuser.networks.filter((network) => network._id !== user._id),
+        }));
+
+        // Re-fetch the user from backend to ensure consistency
+        getUser();
+        console.log(iuser);
+        
+      }
+    } catch (error) {
+      console.error("Error removing network:", error);
+    }
+  };
+ 
   useEffect(() => {
     if (iuser?._id) {
       getPost();
@@ -96,13 +139,14 @@ const ProfileById = () => {
               <p><strong>Mobile:</strong> {iuser?.mobile}</p>
             </div>
           </div>
-          {iuser?._id !== user?._id && (
-            user?.networks?.some((e) => e?._id === id) ? (
-              <button className="remove-network" onClick={() => addNetwork(iuser?._id)}>Bonded</button>
-            ) : (
-              <button className="add-network" onClick={() => addNetwork(iuser?._id)}>NetBond</button>
-            )
-          )}
+          {iuser && user && iuser._id !== user._id && (
+  iuser.networks?.some((e) => e?._id === user._id) ? (
+    <button className="remove-network" onClick={() => removeNetwork(iuser._id)}>Bonded</button>
+  ) : (
+    <button className="add-network" onClick={() => addNetwork(iuser._id)}>NetBond</button>
+  )
+)}
+
         </div>
 
         <div className="profile-posts">
@@ -114,7 +158,7 @@ const ProfileById = () => {
                   <p className="post-author">{iuser?.fname} {iuser?.lname}</p>
                   <p className='posted-time'><i>Posted at:</i> {new Date(post?.createdAt).toLocaleString()}</p>
                   <p className="post-desc">{post?.desc}</p>
-                  <img src={post?.postImage} alt="Post" className="post-image" />
+                  <img src={post?.postImage} alt="" className="post-image" />
                   <div className="post-details">
                     <p className="post-likes"><strong>Likes:</strong> {post?.likedBy.length}</p>
                   </div>
@@ -128,20 +172,20 @@ const ProfileById = () => {
 
         <div className="profile-networks-section">
           <h3>Networks</h3>
-          {iuser?.networks && iuser.networks.length > 0 ? (
+          {iuser?.networks && (
             <div className="network-list">
-              {iuser.networks.map((e, i) => (
-                <a key={i} href={`/profiles/${e?._id}`}>
-                  <div className="network-item">
-                    <img src={e?.dp} alt={`${e.fname}'s profile`} />
-                    <h3>{e.fname}</h3>
-                  </div>
-                </a>
-              ))}
-            </div>
-          ) : (
-            <div className="networks-section-container">
-              <p>No friends added yet</p>
+              {iuser.networks.length > 0 ? (
+                iuser.networks.map((e, i) => (
+                  <Link to={`/profiles/${e?._id}`} key={i}>
+                    <div className="network-item-section">
+                      <img src={e?.dp} alt={`${e.fname}'s profile`} />
+                      <h3>{e.fname}</h3>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <p>No friends added yet</p>
+              )}
             </div>
           )}
         </div>

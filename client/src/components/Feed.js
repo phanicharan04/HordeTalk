@@ -1,18 +1,22 @@
+import Modal from 'react-modal';
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import '../component-styles/Feed.css'
+import '../component-styles/LikesModel.css'
 import likeGif from '../logos/likeicon.gif'
+import likedGif from '../logos/likedicon.gif'
 import shareGif from '../logos/shareicon.gif'
 import saveGif from '../logos/saveicon.gif'
 import { useAuth } from '../context/UserContext'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Addpost from './Addpost'
 
+const posturl = process.env.REACT_APP_backendPostURL
 const Feed = () => {
-  const posturl = process.env.REACT_APP_backendPostURL
+  const {user}= useAuth()
   const navigate = useNavigate()
   const [data, setData] = useState([])
-  const {user}= useAuth()
+
   console.log(user);
   const [status,setsatus]=useState(true)
   
@@ -31,28 +35,45 @@ const Feed = () => {
     getPosts()
   }, [status])
 
-  const handleClick = (postId) => {
-    navigate(`/profiles/${postId}`)
-  }
-
-  const handleLike = (postId) => {
-    console.log("Liked post: ", postId)
-  }
-
-  const handleShare = (postId) => {
-    console.log("Shared post: ", postId)
-  }
-
-  const handleSave = (postId) => {
-    console.log("Saved post: ", postId)
-  }
 console.log(status);
+
+const handleClick = (postId) => {
+  navigate(`/profiles/${postId}`)
+}
 
   return (
     <div className='feed-container'>
       <Addpost setsatus={setsatus} status={status}/>
       {data.map((post, index) => (
-        <div key={index} className='feed-postcard'>
+       <IndvidualPost index={index} post={post} handleClick={handleClick} user={user} />
+      ))}
+    </div>
+  )
+}
+
+function IndvidualPost({index,post,handleClick,user}){
+  const [likedusers,setlikedusers]=useState([] )
+  const [open,setopen]=useState(false)
+
+useEffect(()=>{
+  setlikedusers(post?.likedBy)
+},[])
+
+  const handleLike = async(postId) => {
+  
+    const token = localStorage.getItem('token');
+    const { data } = await axios.post(`${posturl}/like/${postId}`,{},{
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+   setlikedusers(data)
+   
+    
+  }
+  return(
+    <>
+      <div key={index} className='feed-postcard'>
           <div className='feed-post-header'>
             <img onClick={() => handleClick(post.authorId._id)} src={post.authorId.dp || 'default-dp.jpg'} alt='User DP' className='feed-user-dp' />
             <div>
@@ -67,14 +88,59 @@ console.log(status);
             )}
           </div>
           <div className='feed-post-actions'>
-            <img src={likeGif} alt="Like" onClick={() => handleLike(post._id)} className='action-gif' />
-            <img src={shareGif} alt="Share" onClick={() => handleShare(post._id)} className='action-gif' />
-            <img src={saveGif} alt="Save" onClick={() => handleSave(post._id)} className='action-gif' />
+          
+            <img src={!likedusers?.some((e)=> e._id===user?._id)? `${likeGif}`:`${likedGif}`} alt="Like" onClick={() => handleLike(post._id)} className='action-gif' />
+            <span onClick={()=>{setopen(!open)}} id='likes'>
+            {  likedusers.length===1? ` ${likedusers.length} Like`: `${ likedusers.length} likes` }  
+            </span>
+            <LikesModal isOpen={open} likedusers={likedusers} setopen={setopen}/>
           </div>
         </div>
-      ))}
-    </div>
+    </>
   )
 }
+
+const LikesModal = ({ isOpen, likedusers,setopen }) => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setopen(false)
+  };
+  console.log(likedusers);
+  
+ 
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={closeModal}
+      className="likes-modal"
+      overlayClassName="likes-modal-overlay"
+    >
+      {/* Close button */}
+      <button className="modal-close-btn" onClick={closeModal}/>
+      <h2>People who liked this post</h2>
+
+      {false ? (
+        <p>Loading...</p>
+      ) : likedusers.length > 0 ? (
+        <ul className="likes-list">
+          {likedusers.map((user) => (
+            <Link to={`/profiles/${user._id}`}> 
+
+            <li key={user._id} className="likes-list-item">
+              <img src={user?.dp || "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="User Avatar" className="likes-avatar" />
+              <span>{user?.fname}</span>
+            </li>
+            </Link>
+          ))}
+        </ul>
+      ) : (
+        <p>No likes yet.</p>
+      )}
+    </Modal>
+  );
+};
+
+
 
 export default Feed

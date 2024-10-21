@@ -47,7 +47,7 @@ const Login = () => {
             required
           />
           <button type="submit" className="login-button">Log in</button>
-          <a href="/forgot-password" className="forgot-password">Forgotten password?</a>
+          {/* <a href="/forgot-password" className="forgot-password">Forgotten password?</a> */}
         </form>
         <div className="divider"></div>
         <Link to="/signup" className="create-account-button">Create new account</Link>

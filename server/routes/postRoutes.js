@@ -1,12 +1,12 @@
 import express from 'express';
 import validateToken from '../middleware/authMiddleware.js';
-import { addPost, deletePost, likePost, updatePost, uploadImg, viewAllPosts, viewPostByAuthor, viewPostById } from '../controller/postController.js';
+import { addPost, deletePost, toggleLikePost, updatePost, uploadImg, viewAllPosts, viewPostByAuthor, viewPostById } from '../controller/postController.js';
 
 const postRouter = express.Router();
 
 postRouter.route("/addpost").post(validateToken,addPost)
 
-postRouter.route("/likepost/:postId").post(validateToken,likePost)
+postRouter.route("/like/:postId").post(validateToken,toggleLikePost)
 
 postRouter.route("/updatepost/:postId").put(validateToken,updatePost)
 

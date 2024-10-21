@@ -7,25 +7,11 @@ import home from "../logos/home.gif";
 import chat from "../logos/chat.png";
 import { useState, useEffect } from "react";
 import Search from "./Search";
+import { useAuth } from "../context/UserContext";
+
 
 export default function Navbar() {
-  const [activeIcon, setActiveIcon] = useState(localStorage.getItem('activeIcon') || '');
-
-  useEffect(() => {
-    // Update localStorage whenever activeIcon changes
-    if (activeIcon) {
-      localStorage.setItem('activeIcon', activeIcon);
-    }
-  }, [activeIcon]);
-
-  const handleClick = (icon) => {
-    if (icon === 'profile') {
-      setActiveIcon(''); // Clear active state when profile is clicked
-      localStorage.removeItem('activeIcon'); // Remove from localStorage when profile is clicked
-    } else {
-      setActiveIcon(icon); // Set active state for other icons
-    }
-  };
+  const { user } = useAuth();
 
   return (
     <div className="navbarContainer">
@@ -43,22 +29,26 @@ export default function Navbar() {
       <div className="navbar-right">
         <div className="navbarIcons">
           <div className="navbarIconItem">
-            <Link to="/home" className={activeIcon === 'home' ? 'active' : ''} onClick={() => handleClick('home')}>
+            <Link to="/home" >
               <img src={home} alt="Home" className="icon" />
             </Link>
           </div>
           <div className="navbarIconItem">
-            <Link to="/friends" className={activeIcon === 'friends' ? 'active' : ''} onClick={() => handleClick('friends')}>
+            <Link to="/networks" >
               <img src={friends} alt="Friends" className="icon" />
             </Link>
           </div>
           <div className="navbarIconItem">
-            <Link to="/chat" className={activeIcon === 'chat' ? 'active' : ''} onClick={() => handleClick('chat')}>
+            <Link to="/chat" >
               <img src={chat} alt="Chat" className="icon" />
             </Link>
           </div>
-          <Link to="/profile" onClick={() => handleClick('profile')}>
-            <img src={profile} alt="Profile" className="navbarImg" />
+          <Link to="/profile" >
+            <img
+          src= { user?.dp ||"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"}
+          alt="User Avatar"
+          className="navbarImg"
+        />
           </Link>
         </div>
       </div>

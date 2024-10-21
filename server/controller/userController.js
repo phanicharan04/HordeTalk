@@ -189,7 +189,7 @@ export const updateProfile = async (req, res) => {
   export const addToNetworks = async (req, res) => {
     const { userId } = req.body; // The user to be added
     const currentUserId = req.userId; // The logged-in user (assuming you have middleware to attach the logged-in user)
-  console.log(userId);
+  // console.log(userId);
   
     try {
       const networkuser = await user.findByIdAndUpdate(
@@ -211,6 +211,32 @@ export const updateProfile = async (req, res) => {
     }
   };
   
+  export const removeFromNetworks = async (req, res) => {
+    const { userId } = req.params; // The user to be removed
+    const currentUserId = req.userId; // The logged-in user (assuming you have middleware to attach the logged-in user)
+    
+    try {
+      // Remove from the current user's network
+      const updatedUser = await user.findByIdAndUpdate(
+        currentUserId,
+        { $pull: { networks: userId } }, // Remove from network
+        { new: true }
+      ).populate('networks', '-password'); // Populate networks without passwords
+  
+      // Remove from the other user's network
+      await user.findByIdAndUpdate(
+        userId,
+        { $pull: { networks: currentUserId } }, // Remove from network
+        { new: true }
+      ).populate('networks', '-password'); // Populate networks without passwords
+  
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error removing from networks", error });
+    }
+  };
+  
   export const search = async (req, res) => {
     try {
       const { name } = req.body;
@@ -227,3 +253,26 @@ export const updateProfile = async (req, res) => {
     }
   };
   
+  export const networkSearch = async (req, res) => {
+    try {
+        const { name } = req.body;
+        const  userId  = req.userId;
+
+        // Find the user to get their networks and include 'dp' field
+        const userData = await user.findById(userId).populate('networks'); // Include dp in the populated fields
+
+        if (!userData || !userData.networks) {
+            return res.status(404).json({ message: "User or networks not found" });
+        }
+
+        // Filter the networks by the name provided (case-insensitive regex search)
+        const filteredNetworks = userData.networks.filter(friend =>
+            new RegExp(name, 'i').test(friend.fname)
+        );
+
+        res.json(filteredNetworks); // Return the filtered networks including dp
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server error" });
+    }
+};
