@@ -102,7 +102,7 @@ const Profile = () => {
               navigate("/");
             }}
           >
-            Logout
+            Log out
           </button>
         </div>
         <div className="profile-posts">

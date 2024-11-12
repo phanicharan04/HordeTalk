@@ -38,11 +38,11 @@ export default function Navbar() {
               <img src={friends} alt="Friends" className="icon" />
             </Link>
           </div>
-          <div className="navbarIconItem">
+          {/* <div className="navbarIconItem">
             <Link to="/chat" >
               <img src={chat} alt="Chat" className="icon" />
             </Link>
-          </div>
+          </div> */}
           <Link to="/profile" >
             <img
           src= { user?.dp ||"https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"}
