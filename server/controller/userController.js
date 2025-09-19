@@ -212,23 +212,23 @@ export const updateProfile = async (req, res) => {
   };
   
   export const removeFromNetworks = async (req, res) => {
-    const { userId } = req.params; // The user to be removed
-    const currentUserId = req.userId; // The logged-in user (assuming you have middleware to attach the logged-in user)
+    const { userId } = req.params; 
+    const currentUserId = req.userId; 
     
     try {
       // Remove from the current user's network
       const updatedUser = await user.findByIdAndUpdate(
         currentUserId,
-        { $pull: { networks: userId } }, // Remove from network
+        { $pull: { networks: userId } }, 
         { new: true }
-      ).populate('networks', '-password'); // Populate networks without passwords
+      ).populate('networks', '-password'); 
   
-      // Remove from the other user's network
+      
       await user.findByIdAndUpdate(
         userId,
-        { $pull: { networks: currentUserId } }, // Remove from network
+        { $pull: { networks: currentUserId } }, 
         { new: true }
-      ).populate('networks', '-password'); // Populate networks without passwords
+      ).populate('networks', '-password'); 
   
       res.status(200).json(updatedUser);
     } catch (error) {
@@ -241,7 +241,7 @@ export const updateProfile = async (req, res) => {
     try {
       const { name } = req.body;
   
-      // Use a regex for case-insensitive search
+      
       const data = await user.find({
         fname: { $regex: name, $options: 'i' } // 'i' for case-insensitive
       });

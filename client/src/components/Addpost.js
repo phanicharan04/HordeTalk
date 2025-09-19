@@ -28,7 +28,7 @@ const Addpost = ({setsatus,status}) => {
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append('body', JSON.stringify({ desc, uId: user?._id })); // Replace with actual user ID
+      formData.append('body', JSON.stringify({ desc, uId: user?._id }));
       if (image) {
         formData.append('image', image);
       }

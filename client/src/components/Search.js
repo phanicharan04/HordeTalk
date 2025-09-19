@@ -36,7 +36,7 @@ function Search() {
     };
   };
 
-  const debouncedSearch = useCallback(debounce(search, 300), []); // 300 ms debounce
+  const debouncedSearch = useCallback(debounce(search, 300), []); 
 
   const handleInputChange = (e) => {
     const value = e.target.value;
